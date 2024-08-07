@@ -2,6 +2,7 @@ import "./App.css";
 import { useRef, useState } from "react";
 
 function App() {
+  const [Error, setError] = useState();
   const [stream, setStream] = useState();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -10,6 +11,10 @@ function App() {
     console.log(videoRef.current);
 
     async function getCameraStream() {
+      if (window.location.protocol !== "https:") {
+        setError("Kamera faqat HTTPSda ishlaydi.");
+        return;
+      }
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
@@ -69,6 +74,7 @@ function App() {
       >
         Take Picture
       </button>
+      <p>{Error}</p>
     </div>
   );
 }
